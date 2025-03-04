@@ -48,7 +48,18 @@ class DateManager: ObservableObject {
         selectedDate = Calendar.current.startOfDay(for: date)
     }
     
-    func update() {
+    func update(to direction: SliderTimeDirection) {
+        switch direction {
+        case .future:
+            selectedDate = Calendar.current.date(byAdding: .day, value: 7, to: selectedDate)!
+            
+        case .past:
+            selectedDate = Calendar.current.date(byAdding: .day, value: -7, to: selectedDate)!
+            
+        case .unknown:
+            selectedDate = selectedDate
+        }
         
+        calcWeeks(with: selectedDate)
     }
 }
