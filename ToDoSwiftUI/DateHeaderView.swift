@@ -13,6 +13,19 @@ struct DateHeaderView: View {
         ZStack {
             VStack {
                 nameHeaderTextView()
+                DateSliderView { week in
+                    DateView(week: week)
+                }
+                .frame(height: 60, alignment: .top)
+                
+                Divider()
+                
+                HStack {
+                    Spacer()
+                    Text(dateManager.selectedDate.toString(format: "EEEE,dd.MM.yyyy"))
+                        .font(.system(size: 10, design: .rounded))
+                        .foregroundColor(Color.gray)
+                }
             }
         }
     }
