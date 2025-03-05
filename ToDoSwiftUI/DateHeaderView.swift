@@ -47,33 +47,36 @@ struct DateHeaderView: View {
                     .padding(4)
                 
             }
-        }
-        
-        Spacer()
-        
-        VStack(alignment: .trailing) {
-            Text(dateManager.selectedDate.monthToString())
-                .font(.system(size: 10))
-                .fontWeight(.heavy)
-                .foregroundColor(.black)
             
-            Button {
-                withAnimation(.linear(duration: 0.1)) {
-                    dateManager.selectToday()
+            
+                    Spacer()
+            
+            VStack(alignment: .trailing) {
+                Text(dateManager.selectedDate.monthToString())
+                    .font(.system(size: 10))
+                    .fontWeight(.heavy)
+                    .foregroundColor(.black)
+                
+                Button {
+                    withAnimation(.linear(duration: 0.1)) {
+                        dateManager.selectToday()
+                    }
+                } label: {
+                    Text("Today")
+                        .font(.system(size: 16))
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .padding(4)
+                        .background(.black)
+                        .cornerRadius(4)
                 }
-            } label: {
-                Text("Today")
-                    .font(.system(size: 16))
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-                    .padding(4)
-                    .background(.black)
-                    .cornerRadius(4)
             }
         }
     }
 }
 
 #Preview {
-    DateHeaderView()
+    ContentView()
+        .environmentObject(DateManager())
+        .environmentObject(TaskListManager())
 }
