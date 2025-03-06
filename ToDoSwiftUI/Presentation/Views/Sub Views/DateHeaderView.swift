@@ -8,21 +8,23 @@
 import SwiftUI
 
 struct DateHeaderView: View {
-    @EnvironmentObject var dateManager: DateManager
+    
+    @ObservedObject var viewModel: TaskHomePageViewModel
+    
     var body: some View {
         ZStack {
             VStack {
                 nameHeaderTextView()
-                DateSliderView { week in
-                    DateView(week: week)
-                }
+                DateSliderView(viewModel: viewModel, dateViewContent: { week in
+                    DateView(viewModel: viewModel, week: week)
+                })
                 .frame(height: 60, alignment: .top)
                 
                 Divider()
                 
                 HStack {
                     Spacer()
-                    Text(dateManager.selectedDate.toString(format: "EEEE,dd.MM.yyyy"))
+                    Text(viewModel.selectedDate.toString(format: "EEEE,dd.MM.yyyy"))
                         .font(.system(size: 10, design: .rounded))
                         .foregroundColor(Color.gray)
                 }
@@ -40,7 +42,7 @@ struct DateHeaderView: View {
                     .foregroundColor(.black)
                     .padding(4)
                 
-                Text(dateManager.selectedDate == Calendar.current.startOfDay(for: Date()) ? "What's up for today?" : "Planning for future?")
+                Text(viewModel.getSelectedDate() == Calendar.current.startOfDay(for: Date()) ? "What's up for today?" : "Planning for future?")
                     .font(.caption)
                     .fontWeight(.light)
                     .foregroundColor(.black)
@@ -52,14 +54,14 @@ struct DateHeaderView: View {
                     Spacer()
             
             VStack(alignment: .trailing) {
-                Text(dateManager.selectedDate.monthToString())
+                Text(viewModel.getSelectedDate().monthToString())
                     .font(.system(size: 10))
                     .fontWeight(.heavy)
                     .foregroundColor(.black)
                 
                 Button {
                     withAnimation(.linear(duration: 0.1)) {
-                        dateManager.selectToday()
+                        viewModel.selectTheDay(with: Date())
                     }
                 } label: {
                     Text("Today")
@@ -76,7 +78,5 @@ struct DateHeaderView: View {
 }
 
 #Preview {
-    ContentView()
-        .environmentObject(DateManager())
-        .environmentObject(TaskListManager())
+    TaskHomePage(viewModel: TaskHomePageViewModel(dateUseCase: DateUseCase(dateRepository: DateRepository(dateDateProvider: DateDataProvider())), taskUseCase: TaskUseCase(taskRespository: TaskRepository(taskDataProvider: TaskDataProvider()))))
 }

@@ -15,9 +15,7 @@ struct ToDoSwiftUIApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(dateManager)
-                .environmentObject(taskListManager)
+            TaskHomePage(viewModel: TaskHomePageViewModel(dateUseCase: DateUseCase(dateRepository: DateRepository(dateDateProvider: DateDataProvider())), taskUseCase: TaskUseCase(taskRespository: TaskRepository(taskDataProvider: TaskDataProvider()))))
         }
     }
 }
